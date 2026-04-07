@@ -1,34 +1,31 @@
 pipeline {
     agent {
         docker {
-            image 'node:18'
+            image 'python:3.9'
         }
     }
 
     stages {
 
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/sarthak24shirbhate/Deloitte.git',
+                    credentialsId: 'github-creds'
+            }
+        }
+
         stage('Install') {
             steps {
-                dir('app') {
-                    sh 'npm install'
-                }
+                sh 'pip install -r requirements.txt'
             }
         }
 
-        stage('Test') {
+        stage('Run App (Test)') {
             steps {
-                dir('app') {
-                    sh 'npm test'
-                }
+                sh 'python app.py & sleep 5'
             }
         }
 
-        stage('Build') {
-            steps {
-                dir('app') {
-                    sh 'npm run build'
-                }
-            }
-        }
     }
 }
