@@ -1,14 +1,15 @@
 pipeline {
     agent any
 
-    environment {
-        APP_VERSION = "1.0.${BUILD_NUMBER}"
+    tools {
+        nodejs 'node18'
     }
 
     stages {
-
         stage('Install') {
             steps {
+                sh 'node -v'
+                sh 'npm -v'
                 sh 'npm install'
             }
         }
@@ -26,4 +27,3 @@ pipeline {
         }
     }
 }
-
